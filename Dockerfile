@@ -15,9 +15,9 @@ ENV GOPROXY=$GO_PROXY
 
 COPY . .
 
-RUN apt-get update && apt-get install unzip
+RUN apt-get update && apt-get install unzip && apt-get clean && apt-get autoclean
 
-RUN cd ../ && unzip ./app/soar.zip && cd ./app && go mod download
+RUN cd ../ && wget https://image.textworld.cn/soar.zip  && unzip ./soar.zip && cd ./app && go mod download
 
 RUN go build -o zst_soar ./main.go
 
