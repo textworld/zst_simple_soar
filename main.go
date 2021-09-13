@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/percona/go-mysql/query"
 	"strings"
+	"os"
 )
 
 // 1. go里面没有类的概念
@@ -29,8 +30,11 @@ type SQLResponse struct {
 }
 
 func main() {
-	fingerprint := strings.TrimSpace(query.Fingerprint("select * from test where c like '%b%'"))
-	fmt.Println(fingerprint)
+
+	listenAddr := os.Getenv("LISTEN")
+	if listenAddr == "" {
+		listenAddr = ":8082"
+	}
 
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
@@ -75,5 +79,5 @@ func main() {
 		context.JSON(200, resp)
 	})
 
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.Run(listenAddr) // listen and serve on 0.0.0.0:8080
 }

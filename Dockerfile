@@ -21,7 +21,7 @@ RUN cd ../ && unzip ./app/soar.zip && cd ./app && go mod download
 
 RUN go build -o zst_soar ./main.go
 
-FROM scratch as runner
+FROM ubuntu:20.04 as runner
 COPY --from=builder /usr/src/app/zst_soar /opt/app/
-CMD ["/opt/app/jmx-puller"]
+CMD ["/opt/app/zst_soar"]
 
